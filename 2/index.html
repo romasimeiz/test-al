@@ -10,34 +10,33 @@
   
 </body>
 <script>
-  var a = [ [1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]  ];
+  var a = [ [1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12] , [13, 14, 15, 16] ];
 
   function spiralMatrix(matrix) {
     var resultArray = [];
     var M = matrix.length;
     var N = matrix[0].length;
     
-    for(var i=0, j=0; i < M, j<N; i++, j++) {
+    for(var i=0, j=0; i < N, j < M; i++, j++) {
       
-      for(var i1 = j; i1<N-j; i1++) {
-        resultArray.push(matrix[j][i1]);
+      for(var i1 = i; i1<N-i; i1++) {
+        resultArray.push(matrix[i][i1]);
       }
 
-      for(var i2 = i+1; i2<M-i; i2++) {
-          resultArray.push(matrix[i2][M-1-i])
+      for(var i2 = j+1; i2<M-j; i2++) {
+          resultArray.push(matrix[i2][N-j-1])
       }
-
+      
       for(var i3 = N-2-j; i3>=0+j; i3--) {
-        resultArray.push(matrix[N-1-j][i3])
+        resultArray.push(matrix[M-1-j][i3])
       }
-
+      
       for(var i4 = M-2-i; i4>i; i4--) {
         resultArray.push(matrix[i4][i])
       }
+      
     }
-
     console.log(" Matrix ", resultArray + " ");
-
   }
 
   spiralMatrix(a);
