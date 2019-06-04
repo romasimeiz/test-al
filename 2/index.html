@@ -10,31 +10,34 @@
   
 </body>
 <script>
-  var a = [ [1, 2, 3], [4, 5, 6], [7, 8, 9] ];
+  var a = [ [1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]  ];
 
   function spiralMatrix(matrix) {
     var resultArray = [];
     var M = matrix.length;
     var N = matrix[0].length;
     
-    matrix[0].forEach(function(item) {
-      resultArray.push(item);
-    })
+    for(var i=0, j=0; i < M, j<N; i++, j++) {
+      
+      for(var i1 = j; i1<N-j; i1++) {
+        resultArray.push(matrix[j][i1]);
+      }
 
-    for(var i = 1; i < M - 1; i++) {
-      resultArray.push(matrix[i][matrix[i].length - 1]);
+      for(var i2 = i+1; i2<M-i; i2++) {
+          resultArray.push(matrix[i2][M-1-i])
+      }
+
+      for(var i3 = N-2-j; i3>=0+j; i3--) {
+        resultArray.push(matrix[N-1-j][i3])
+      }
+
+      for(var i4 = M-2-i; i4>i; i4--) {
+        resultArray.push(matrix[i4][i])
+      }
     }
 
-    for(var i = M - 1; i >= 1 ; i++) {
-      resultArray.push(matrix[i][matrix[i].length - 1]);
-    }
+    console.log(" Matrix ", resultArray + " ");
 
-    var lastElem = matrix[matrix.length - 1];
-    for(var i = lastElem.length - 1; i >= 0; i--) {
-      resultArray.push(lastElem[i]);
-    }
-
-    console.log(" M x N ", resultArray + "" );
   }
 
   spiralMatrix(a);
