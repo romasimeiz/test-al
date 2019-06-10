@@ -10,35 +10,51 @@
   
 </body>
 <script>
-  var a = [ [1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12] , [13, 14, 15, 16] ];
+  /*var data = [[1,  2,  3,  4],
+              [5,  6,  7,  8],
+              [9,  10, 11, 12],
+              [13, 14, 15, 16]];
+
+  */
+  var data = [[1,  2,  3,  4],
+              [5,  6,  7,  8],
+              [9,  10, 11, 12]]; 
+  
+
+  /*var data = [[1,  2,  3],
+                [4,  5,  6],
+                [7,  8,  9],
+                [10, 11, 12]];
+  */
 
   function spiralMatrix(matrix) {
     var resultArray = [];
     var M = matrix.length;
     var N = matrix[0].length;
     
-    for(var i=0, j=0; i < N, j < M; i++, j++) {
-      
-      for(var i1 = i; i1<N-i; i1++) {
-        resultArray.push(matrix[i][i1]);
+    for(var i=0; i < M; i++) {
+      for(var j = i; j<N-i; j++) {
+        resultArray.push(matrix[i][j]);
       }
 
-      for(var i2 = j+1; i2<M-j; i2++) {
-          resultArray.push(matrix[i2][N-j-1])
+      for(var j = i+1; j<M-i; j++) {
+        resultArray.push(matrix[j][N-i-1])
       }
       
-      for(var i3 = N-2-j; i3>=0+j; i3--) {
-        resultArray.push(matrix[M-1-j][i3])
+      for(var j = N-2-i; j>=0+i; j--) {
+        if(i === M-2) {
+          break;
+        }
+        resultArray.push(matrix[M-1-i][j])
       }
       
-      for(var i4 = M-2-i; i4>i; i4--) {
-        resultArray.push(matrix[i4][i])
+      for(var j = M-2-i; j>i; j--) {       
+        resultArray.push(matrix[j][i]);
       }
-      
     }
-    console.log(" Matrix ", resultArray + " ");
+    console.log(" Matrix is : ", resultArray + "");
   }
 
-  spiralMatrix(a);
+  spiralMatrix(data);
 </script>
 </html>
