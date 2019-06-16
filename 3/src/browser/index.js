@@ -3,6 +3,7 @@ import Folder from "./Folder";
 import File from "./File";
 import data from "../data.json";
 import uuidv1 from "uuid/v1";
+import find from 'lodash/find'
 
 class Browser extends PureComponent {
     bootstrapState = state => {
@@ -25,7 +26,7 @@ class Browser extends PureComponent {
         const render = folders => {
             return folders.forEach(item => {
                 output.push(item.type === "FOLDER" ?
-                <Folder key={item.id} {...item} />
+                <Folder onClick={this.onClick} key={item.id} {...item} />
                  :
                 <File key={item.id} {...item} />
                 );
@@ -34,6 +35,21 @@ class Browser extends PureComponent {
         };
         render(this.state.folders);
         return output;
+    };
+
+    onClick = id => {
+        console.log(" AAAAA ", id);
+        const makeData = (data, id) => {
+            const result = [];
+            data.forEach(item => {
+                console.log("hmmm", id === item.id);
+                result.push({ ...item, isExpanded: id === item.id ? !item.isExpanded : item.isExpanded, children: item.children && makeData(item.children, id)})
+            });
+            return result;
+        };
+        console.log(" AAAAA ", "works");
+        // const object = find(this.state.folders, ["id", id]);
+        this.setState({ folders: makeData(this.state.folders, id) });
     };
 
     state = this.bootstrapState(data);
