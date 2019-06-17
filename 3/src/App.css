@@ -31,3 +31,15 @@
     transform: rotate(360deg);
   }
 }
+
+.flex {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.wrapper {
+  padding: 1.5rem;
+}
