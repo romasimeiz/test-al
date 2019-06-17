@@ -20,6 +20,16 @@ class Browser extends PureComponent {
         return newState;
     };
 
+    getNode = (path, props = {}) => {
+        const { folders } = this.state;
+
+        const node = folders[path].type === "FOLDER" ?
+            <Folder onClick={this.onClick} {...folders[path]} {...props} />
+            :
+            <File {...folders[path]} {...props} />;
+        return <div key={path} style={{ marginLeft: 5 * folders[path].level, display: "flex", flexDirection: "row" }}>{node}</div>;
+    };
+
     renderTree = () => {
         const output = [];
         const render = folders => {
@@ -55,11 +65,30 @@ class Browser extends PureComponent {
         }}))
     };
 
-    startSearch = e => {
-        e.preventDefault();
-        const {searchInput} = this.state;
-        const matches = Object.keys(this.state.folders).filter(key => this.state.folders[key].type === "FILE" && key.includes(searchInput));
-        console.log("MATCHES", matches);
+    renderSearch = () => {
+        const { searchInput, folders } = this.state;
+        const matches = [];
+        Object.keys(folders).filter(key => {
+            const splittedKey = key.split("/");
+            if (folders[key].type === "FILE" && splittedKey[splittedKey.length-1].includes(searchInput)) {
+                key.split("/").reduce((previousValue, currentValue) => {
+                    const peaceOfPath = `${previousValue}/${currentValue}`;
+                    matches.push(peaceOfPath);
+                    return peaceOfPath;
+                })
+            }
+        });
+        const output = [];
+        console.log("matches", matches);
+        new Set(matches).forEach(path => {
+            const pathObject = folders[path];
+            const node = pathObject.type === "FOLDER" ?
+                <Folder onClick={this.onClick} {...pathObject} visible isExpanded />
+                :
+                <File {...pathObject} visible isExpanded />;
+            output.push(<div key={path} style={{ marginLeft: 5 * pathObject.level, display: "flex", flexDirection: "row" }}>{node}</div>);
+        });
+        return output;
     };
 
     onChange = e => {
@@ -73,15 +102,15 @@ class Browser extends PureComponent {
     };
 
     render() {
+        const { searchInput, folders } = this.state;
         return (
             <div style={{ display: "flex", flexDirection: "column" }}>
                 <div style={{ display: "flex", flexDirection: "row" }}>
-                    <input type="text" onChange={this.onChange} id="searchInput" value={this.state.searchInput} />
-                    <button onClick={this.startSearch}>Search</button>
+                    <input type="text" placeholder="Search..." onChange={this.onChange} id="searchInput" value={searchInput} />
                 </div>
                 {
-                    Object.keys(this.state.folders).length ?
-                    this.renderTree() : <div></div>
+                    Object.keys(folders).length ?
+                    (searchInput.length >= 3 ? this.renderSearch() : this.renderTree()) : <div></div>
                 }
             </div>
         )
